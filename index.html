@@ -36,7 +36,6 @@
             log.innerText = "Đang kết nối tới Server (có thể mất 50s nếu Server đang ngủ)...";
 
             try {
-                // Đã gắn link Render của He vào đây
                 let res = await fetch('https://lonme-2.onrender.com/api/spam', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
