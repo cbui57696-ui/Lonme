@@ -3,121 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CyberSpam Control Panel</title>
-    
+    <title>CyberSpam Panel</title>
     <style>
-        /* --- PHẦN CSS TRANG TRÍ --- */
-        body {
-            background-color: #0d0d0d;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        .box-container {
-            background-color: #1a1a1a;
-            padding: 30px;
-            border-radius: 10px;
-            border: 1px solid #333;
-            width: 350px;
-            box-shadow: 0 0 15px rgba(0, 255, 204, 0.2);
-        }
-
-        h2 {
-            text-align: center;
-            color: #00ffcc;
-            margin-bottom: 20px;
-        }
-
-        .input-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #aaa;
-            font-size: 14px;
-        }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            background-color: #000;
-            border: 1px solid #444;
-            color: #fff;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-
-        input:focus {
-            border-color: #00ffcc;
-            outline: none;
-        }
-
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #00ffcc;
-            color: #000;
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-            font-size: 16px;
-        }
-
-        button:hover {
-            background-color: #00ccaa;
-        }
+        body { background-color: #0d0d0d; color: #fff; font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .box { background-color: #1a1a1a; padding: 30px; border-radius: 10px; border: 1px solid #333; width: 300px; box-shadow: 0 0 15px rgba(0, 255, 204, 0.2); }
+        h2 { text-align: center; color: #00ffcc; }
+        input { width: 100%; padding: 10px; margin-bottom: 15px; background: #000; border: 1px solid #444; color: #00ffcc; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #00ffcc; color: #000; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; }
+        button:disabled { background: #555; cursor: not-allowed; }
+        #log { margin-top: 15px; color: #aaa; font-size: 13px; font-family: monospace; }
     </style>
 </head>
 <body>
-
-    <!-- PHẦN HTML GIAO DIỆN -->
-    <div class="box-container">
+    <div class="box">
         <h2>SPAM PANEL</h2>
-        
-        <!-- Ô nhập số điện thoại -->
-        <div class="input-group">
-            <label>Số điện thoại mục tiêu:</label>
-            <input type="text" id="phone" placeholder="VD: 84912345678">
-        </div>
-
-        <!-- Ô nhập số lượng -->
-        <div class="input-group">
-            <label>Số lượng Spam:</label>
-            <input type="number" id="amount" placeholder="VD: 1000">
-        </div>
-
-        <!-- Nút bấm -->
-        <button onclick="batDauSpam()">BẮT ĐẦU</button>
+        <input type="text" id="phone" placeholder="Số điện thoại (VD: 849...)">
+        <input type="number" id="amount" placeholder="Số lượng">
+        <button id="btn" onclick="start()">BẮT ĐẦU</button>
+        <div id="log"></div>
     </div>
 
-    <!-- PHẦN JAVASCRIPT XỬ LÝ -->
     <script>
-        function batDauSpam() {
-            // Lấy dữ liệu từ ô input
-            let sdt = document.getElementById("phone").value;
-            let soLuong = document.getElementById("amount").value;
+        async function start() {
+            let phone = document.getElementById("phone").value;
+            let amount = document.getElementById("amount").value;
+            let btn = document.getElementById("btn");
+            let log = document.getElementById("log");
 
-            // Kiểm tra xem người dùng đã nhập chưa
-            if (sdt === "" || soLuong === "") {
-                alert("Vui lòng nhập đầy đủ Số điện thoại và Số lượng!");
-                return;
+            if (!phone || !amount) { alert("Nhập đủ SĐT và Số lượng!"); return; }
+
+            btn.disabled = true;
+            log.innerText = "Đang gửi lệnh...";
+
+            try {
+                // Gửi lệnh tới Backend Python (sẽ điền link Render vào đây)
+                let res = await fetch('https://TEN-MIEN-RENDER.onrender.com/api/spam', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone: phone, amount: parseInt(amount) })
+                });
+                let data = await res.json();
+                log.innerText = data.message;
+            } catch (e) {
+                log.innerText = "Lỗi kết nối server!";
             }
-
-            // Hiển thị thông báo (Tạm thời, sau này sẽ gửi dữ liệu về C++)
-            alert("Đang gửi lệnh spam " + soLuong + " tin nhắn tới số " + sdt);
-            
-            // Code gửi API về Backend C++ sẽ nằm ở đây
+            btn.disabled = false;
         }
     </script>
-
 </body>
 </html>
