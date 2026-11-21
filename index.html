@@ -11,7 +11,7 @@
         input { width: 100%; padding: 10px; margin-bottom: 15px; background: #000; border: 1px solid #444; color: #00ffcc; border-radius: 5px; box-sizing: border-box; }
         button { width: 100%; padding: 12px; background: #00ffcc; color: #000; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; }
         button:disabled { background: #555; cursor: not-allowed; }
-        #log { margin-top: 15px; color: #aaa; font-size: 13px; font-family: monospace; }
+        #log { margin-top: 15px; color: #aaa; font-size: 13px; font-family: monospace; word-wrap: break-word; }
     </style>
 </head>
 <body>
@@ -33,11 +33,11 @@
             if (!phone || !amount) { alert("Nhập đủ SĐT và Số lượng!"); return; }
 
             btn.disabled = true;
-            log.innerText = "Đang gửi lệnh...";
+            log.innerText = "Đang kết nối tới Server (có thể mất 50s nếu Server đang ngủ)...";
 
             try {
-                // Gửi lệnh tới Backend Python (sẽ điền link Render vào đây)
-                let res = await fetch('https://TEN-MIEN-RENDER.onrender.com/api/spam', {
+                // Đã gắn link Render của He vào đây
+                let res = await fetch('https://lonme-2.onrender.com/api/spam', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ phone: phone, amount: parseInt(amount) })
@@ -45,7 +45,7 @@
                 let data = await res.json();
                 log.innerText = data.message;
             } catch (e) {
-                log.innerText = "Lỗi kết nối server!";
+                log.innerText = "Lỗi kết nối Server!";
             }
             btn.disabled = false;
         }
