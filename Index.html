@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSpam Control Panel</title>
+    
+    <style>
+        /* --- PHẦN CSS TRANG TRÍ --- */
+        body {
+            background-color: #0d0d0d;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .box-container {
+            background-color: #1a1a1a;
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid #333;
+            width: 350px;
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.2);
+        }
+
+        h2 {
+            text-align: center;
+            color: #00ffcc;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            background-color: #000;
+            border: 1px solid #444;
+            color: #fff;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            border-color: #00ffcc;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #00ffcc;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #00ccaa;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PHẦN HTML GIAO DIỆN -->
+    <div class="box-container">
+        <h2>SPAM PANEL</h2>
+        
+        <!-- Ô nhập số điện thoại -->
+        <div class="input-group">
+            <label>Số điện thoại mục tiêu:</label>
+            <input type="text" id="phone" placeholder="VD: 84912345678">
+        </div>
+
+        <!-- Ô nhập số lượng -->
+        <div class="input-group">
+            <label>Số lượng Spam:</label>
+            <input type="number" id="amount" placeholder="VD: 1000">
+        </div>
+
+        <!-- Nút bấm -->
+        <button onclick="batDauSpam()">BẮT ĐẦU</button>
+    </div>
+
+    <!-- PHẦN JAVASCRIPT XỬ LÝ -->
+    <script>
+        function batDauSpam() {
+            // Lấy dữ liệu từ ô input
+            let sdt = document.getElementById("phone").value;
+            let soLuong = document.getElementById("amount").value;
+
+            // Kiểm tra xem người dùng đã nhập chưa
+            if (sdt === "" || soLuong === "") {
+                alert("Vui lòng nhập đầy đủ Số điện thoại và Số lượng!");
+                return;
+            }
+
+            // Hiển thị thông báo (Tạm thời, sau này sẽ gửi dữ liệu về C++)
+            alert("Đang gửi lệnh spam " + soLuong + " tin nhắn tới số " + sdt);
+            
+            // Code gửi API về Backend C++ sẽ nằm ở đây
+        }
+    </script>
+
+</body>
+</html>
